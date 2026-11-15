@@ -26,21 +26,20 @@ const home = import.meta.env.BASE_URL;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />}
-    <link rel="alternate" type="application/rss+xml" title="Unish Khadka · Blog" href={`${home}rss.xml`} />
+    <link rel="alternate" type="application/rss+xml" title="Unish Khadka · Writing" href={`${home}rss.xml`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" />
   </head>
   <body>
     <header class="nav">
       <div class="wrap">
-        <a class="mark" href={home}>Unish <em>Khadka</em></a>
+        <a class="mark" href={home}>Unish Khadka</a>
         <nav aria-label="Sections">
-          <ul class="mono">
+          <ul>
             <li><a href={`${home}#work`}>Work</a></li>
-            <li><a href={`${home}#approach`}>Approach</a></li>
-            <li><a href={`${home}#toolkit`}>Toolkit</a></li>
-            <li><a href={`${home}blog/`} aria-current={current === 'blog' ? 'page' : undefined}>Blog</a></li>
+            <li><a href={`${home}#about`}>About</a></li>
+            <li><a href={`${home}blog/`} aria-current={current === 'blog' ? 'page' : undefined}>Writing</a></li>
             <li><a href={`${home}#contact`}>Contact</a></li>
           </ul>
         </nav>
@@ -52,9 +51,9 @@ const home = import.meta.env.BASE_URL;
     </main>
 
     <footer>
-      <div class="wrap mono muted">
+      <div class="wrap">
         <span>© {new Date().getFullYear()} Unish Khadka</span>
-        <span>Set in Bricolage Grotesque, Instrument Serif &amp; Geist</span>
+        <span>Monroe, Louisiana</span>
       </div>
     </footer>
   </body>

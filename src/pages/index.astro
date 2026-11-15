@@ -4,267 +4,223 @@ import { getPosts, formatDate } from '../lib/posts';
 
 const base = import.meta.env.BASE_URL;
 const latest = (await getPosts()).filter((post) => !post.data.draft).slice(0, 3);
-const marquee = ['Python', 'Go', 'PostgreSQL', 'Redis', 'Django', 'Flask', 'FastAPI', 'Celery', 'SQLite', 'TypeScript', 'Docker', 'Linux'];
+
+// The hero trace: each span is a section of this page. Start and duration are percentages of the bar.
+const spans = [
+  { href: '#top', name: 'GET /', tag: 'root', depth: 0, s: 0, d: 100, ms: 240 },
+  { href: '#work', name: 'projects.list', depth: 1, s: 3, d: 52, ms: 126 },
+  { href: '#climatecrop', name: 'climatecrop', tag: 'py', depth: 2, s: 5, d: 19, ms: 46 },
+  { href: '#dendrite', name: 'dendrite', tag: 'go', depth: 2, s: 24, d: 13, ms: 31 },
+  { href: '#truehire', name: 'truehire', tag: 'py', depth: 2, s: 33, d: 14, ms: 34 },
+  { href: '#athletex', name: 'athletex', tag: 'ts', depth: 2, s: 45, d: 10, ms: 24 },
+  { href: '#principles', name: 'principles.check', depth: 1, s: 57, d: 13, ms: 31 },
+  { href: '#toolkit', name: 'toolkit.resolve', depth: 1, s: 71, d: 11, ms: 26 },
+  { href: '#writing', name: 'writing.recent', depth: 1, s: 83, d: 8, ms: 19 },
+  { href: '#contact', name: 'contact.open', depth: 1, s: 92, d: 7, ms: 17 },
+];
+
+const projects = [
+  {
+    id: 'climatecrop', name: 'ClimateCrop AI', href: 'https://github.com/Zeusangis/ClimateCrop-AI', lead: true,
+    meta: ['TechXpo 2026', 'Team of two', 'Flask · Next.js · Gemini'],
+    summary: 'Turns public climate and crop records into planting decisions for one farm. It ranks which of 30 crops fit, finds when to plant, and follows a crop from sowing to harvest.',
+    points: [
+      'Crop fit is scored by stated rules against a 30-year NASA climate normal, and every result shows its numbers.',
+      'AI only writes advice from facts the app supplies. Answers with a chemical dose or an invented number are rejected.',
+      'Frost, heat, heavy-rain and dry-spell alerts come from the real forecast.',
+    ],
+    cap: 'rules first, AI last',
+    flow: [['Next.js app', 'Vercel'], 'REST · session cookie', ['Flask API', 'rules · journeys · expert', true], 'sourced data', [['Climate', 'NASA · Open-Meteo'], ['Crops', 'FAO ECOCROP']], 'fact sheet only', ['AI advice', 'Gemini · Pl@ntNet']],
+    numbers: [['144', 'tests'], ['30', 'crops scored'], ['7', 'data sources']],
+  },
+  {
+    id: 'dendrite', name: 'Dendrite', href: 'https://github.com/Zeusangis/Dendrite',
+    meta: ['Local-first knowledge graph', 'Go · SQLite · Next.js'],
+    summary: 'A knowledge graph for Markdown notes that runs entirely on your machine. The vault stays the source of truth; Dendrite builds a searchable graph on top of it.',
+    points: [
+      'Background sync picks up edits made outside the app, serialized with API writes.',
+      'Revision checks reject stale saves and deletes with HTTP 409.',
+      'Atomic same-directory writes, strict vault paths and symlink rejection.',
+    ],
+    cap: 'loopback only',
+    flow: [['Next.js graph UI', ':3000'], 'REST', ['Go API server', ':8080', true], 'serialized sync', [['Markdown vault', 'source of truth'], ['SQLite', 'derived graph']]],
+    numbers: [['6.8k', 'lines of Go'], ['12', 'test files'], ['0', 'cloud services']],
+  },
+  {
+    id: 'truehire', name: 'TrueHire', href: 'https://github.com/Zeusangis/prometheus',
+    meta: ['Evidence-first recruiting', 'Flask · Celery · Redis · React'],
+    summary: "Pairs job-specific resume analysis with bounded evidence from a candidate's public GitHub. AI supplies evidence for a human decision; it never accepts or rejects anyone on its own.",
+    points: [
+      'Screening runs on Celery and Redis after every application, with independent, durable retries.',
+      'Recruiter auth, CSRF protection and organization-scoped data.',
+      'Append-only audit trail of every stage change and retry.',
+    ],
+    cap: 'async pipeline',
+    flow: [['React + TypeScript', 'TanStack Query'], 'REST', ['Flask API', 'auth · orgs · audit', true], 'enqueue', [['PostgreSQL', 'SQLAlchemy'], ['Celery', 'Redis broker']], 'bounded calls', ['Resume + GitHub analysis', 'Gemini · GitHub REST']],
+    numbers: [['136', 'backend tests'], ['CI', 'every push'], ['2 s', 'live refresh']],
+  },
+  {
+    id: 'athletex', name: 'AthleteX', href: 'https://github.com/Zeusangis/Nexus',
+    meta: ['Training load and ACL risk', 'Express · FastAPI · MediaPipe'],
+    summary: 'Coaches see a whole squad on one screen and score landing mechanics from a single jump video.',
+    points: [
+      'Pose detection measures knee flexion, knee valgus and trunk lean.',
+      'Role-based access: coaches manage athletes, athletes only see their own data.',
+    ],
+    cap: '4 services',
+    flow: [['Next.js 15 app', ':3001'], 'JWT bearer', ['Express + Prisma', ':8000', true], 'service calls', [['ACL analysis', 'Flask · OpenCV'], ['Assistant', 'FastAPI']]],
+    numbers: [['4', 'services'], ['2', 'languages'], ['3', 'joint angles']],
+  },
+];
 ---
 <Base>
   <div class="wrap hero">
-    <div class="hero-meta">
-      <div><span class="mono muted">Role</span><span>Backend developer</span></div>
-      <div><span class="mono muted">Studying</span><span>Computer Science, ULM</span></div>
-      <div><span class="mono muted">Writes</span><span>Python, Go, TypeScript</span></div>
-      <div><span class="mono muted">Now</span><span><i class="dot" aria-hidden="true"></i>Going deeper on Go</span></div>
+    <div>
+      <span class="label">Backend developer · CS at ULM</span>
+      <h1 style="margin-top:14px">Unish Khadka</h1>
+      <p class="lede">I build the <strong>APIs, databases and background workers</strong> behind the screen, and I keep building after the prototype works.</p>
     </div>
 
-    <h1 class="name" aria-label="Unish Khadka">
-      <span class="row"><span>Unish</span></span>
-      <span class="row"><span><em>K</em>hadka</span></span>
-    </h1>
-
-    <div class="hero-foot">
-      <p class="statement">Building the systems <em>behind</em> the screen.</p>
-      <p class="intro">I'm a computer science student at the <b>University of Louisiana Monroe</b> who builds APIs, databases and background workers, and keeps building after the prototype works.</p>
+    <div class="trace" aria-label="This page drawn as a request trace. Each row links to a section.">
+      <div class="trace-head"><span><b>GET</b> /unish-khadka</span><span><span class="ok">200 OK</span> · 10 spans · <b>240 ms</b></span></div>
+      <div class="trace-body">
+        <div class="axis" aria-hidden="true">
+          <span>span</span>
+          <div class="ticks"><span style="left:0">0</span><span style="left:25%">60</span><span style="left:50%">120</span><span style="left:75%">180</span><span style="left:100%">240</span></div>
+          <span style="text-align:right">ms</span>
+        </div>
+        {spans.map((sp) => (
+          <a class="span" href={sp.href} data-depth={sp.depth} style={`--s:${sp.s};--d:${sp.d}`}>
+            <span class="name">{sp.name}{sp.tag && <> <i>{sp.tag}</i></>}</span>
+            <span class="track"><span class="bar"></span></span>
+            <span class="ms">{sp.ms}</span>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="track">
-      {[...marquee, ...marquee].map((word, i) => <span class={i % 2 ? 'it' : undefined}>{word}</span>)}
-    </div>
+  <div class="wrap">
+    <dl class="strip">
+      <div><dt>Status</dt><dd class="open">Open to internships</dd></div>
+      <div><dt>Tests passing</dt><dd>280 across projects</dd></div>
+      <div><dt>Writes</dt><dd>Python, Go, TypeScript</dd></div>
+      <div><dt>Based in</dt><dd>Monroe, Louisiana</dd></div>
+    </dl>
   </div>
 
-  <!-- WORK -->
-  <section id="work">
+  <section id="work" style="border-top:0">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="mono muted">Index · 4 projects</span>
-        <h2>Selected <em>work</em></h2>
+      <div class="head">
+        <span class="label">Selected work</span>
+        <div><h2>Four projects, strongest first.</h2><p>Each one shipped with tests, and each taught me something the one before it didn't.</p></div>
       </div>
 
-      <ol class="index">
-        <li><a href="#climatecrop"><span class="no muted">01</span><span class="ttl">ClimateCrop AI <em>planting decisions from climate data</em></span><span class="meta mono muted"><span>Flask · Next.js</span></span></a></li>
-        <li><a href="#dendrite"><span class="no muted">02</span><span class="ttl">Dendrite <em>local-first knowledge graph</em></span><span class="meta mono muted"><span>Go · SQLite</span></span></a></li>
-        <li><a href="#truehire"><span class="no muted">03</span><span class="ttl">TrueHire <em>evidence-first recruiting</em></span><span class="meta mono muted"><span>Flask · Celery</span></span></a></li>
-        <li><a href="#athletex"><span class="no muted">04</span><span class="ttl">AthleteX <em>ACL injury risk</em></span><span class="meta mono muted"><span>Express · MediaPipe</span></span></a></li>
-      </ol>
-
-      <div style="margin-top: clamp(64px, 9vw, 120px)">
-
-        <article class="spread" id="climatecrop">
+      {projects.map((p) => (
+        <article class="writeup" id={p.id}>
           <div>
-            <div class="spread-head"><h3>ClimateCrop AI</h3><span class="mono muted">01 / Flask · Next.js · Gemini</span></div>
-            <p class="lead">Turns public climate and crop records into planting decisions <em>for one farm.</em></p>
-            <p>A farmer saves their farm once. The app ranks which of 30 crops fit, finds when to plant, compares last season against the outlook, and follows a crop from sowing to harvest with an expert alongside. Every number comes from a named source; AI only writes advice from facts the app hands it. Built with a teammate for TechXpo 2026 at ULM.</p>
-            <ul class="points">
-              <li>Crop fit is scored by stated rules against a 30-year NASA POWER climate normal, and each result shows its numbers</li>
-              <li>Expert advice must match a fixed format and is rejected if it gives a chemical dose or a number not in the facts</li>
-              <li>Field alerts for frost, heat, heavy rain and dry spells from the real forecast</li>
-              <li>Leaf-photo disease checks with Pl@ntNet, with Gemini as a second look when unsure</li>
-              <li>Cookie auth through a same-origin proxy, CI on every push, Render and Vercel deploys</li>
-            </ul>
-            <a class="cta" href="https://github.com/Zeusangis/ClimateCrop-AI">View on GitHub <span aria-hidden="true">↗</span></a>
+            <div class="meta">{p.lead && <span class="lead">Latest</span>}{p.meta.map((m) => <span>{m}</span>)}</div>
+            <h3><a href={p.href}>{p.name}</a></h3>
+            <p>{p.summary}</p>
+            <ul>{p.points.map((pt) => <li>{pt}</li>)}</ul>
+            <div class="foot"><a class="link" href={p.href}>Source on GitHub</a></div>
           </div>
-          <aside class="anatomy" aria-label="ClimateCrop AI architecture">
-            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">rules first, AI last</span></div>
+          <aside class="anatomy" aria-label={`${p.name} architecture`}>
+            <div class="cap"><span>How it fits together</span><span>{p.cap}</span></div>
             <div class="flow">
-              <div class="node"><b>Next.js app</b><small>Vercel</small></div>
-              <div class="edge">REST · session cookie</div>
-              <div class="node core"><b>Flask API</b><small>rules · journeys · expert</small></div>
-              <div class="edge">sourced data</div>
-              <div class="pair">
-                <div class="node"><b>Climate</b><small>NASA · Open-Meteo</small></div>
-                <div class="node"><b>Crops</b><small>FAO ECOCROP</small></div>
-              </div>
-              <div class="edge">fact sheet only</div>
-              <div class="node"><b>AI advice</b><small>Gemini · Pl@ntNet</small></div>
+              {p.flow.map((step) =>
+                typeof step === 'string' ? <div class="edge">{step}</div>
+                : Array.isArray(step[0]) ? <div class="pair">{(step as [string, string][]).map(([b, s]) => <div class="node"><b>{b}</b><small>{s}</small></div>)}</div>
+                : <div class={step[2] ? 'node core' : 'node'}><b>{step[0]}</b><small>{step[1]}</small></div>
+              )}
             </div>
-            <div class="figures">
-              <div><b>30</b><span>crops scored</span></div>
-              <div><b>144</b><span>automated tests</span></div>
-              <div><b>7</b><span>data sources</span></div>
-            </div>
+            <div class="numbers">{p.numbers.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
           </aside>
         </article>
-
-        <article class="spread" id="dendrite">
-          <div>
-            <div class="spread-head"><h3>Dendrite</h3><span class="mono muted">02 / Go · SQLite · Next.js</span></div>
-            <p class="lead">A knowledge graph for Markdown notes that runs <em>entirely</em> on your own machine.</p>
-            <p>Your Markdown vault stays the source of truth. Dendrite watches it, builds a searchable and explainable graph of notes, links and related activity, and keeps every derived byte outside the vault.</p>
-            <ul class="points">
-              <li>Background sync picks up edits made outside the app, serialized with API writes</li>
-              <li>Atomic same-directory writes, strict vault paths and symlink rejection</li>
-              <li>Revision checks reject stale saves and deletes with HTTP 409</li>
-              <li>Full-text search, wikilinks, aliases, backlinks, undo and redo</li>
-              <li>Optional activity graph that never records keystrokes or page contents</li>
-            </ul>
-            <a class="cta" href="https://github.com/Zeusangis/Dendrite">View on GitHub <span aria-hidden="true">↗</span></a>
-          </div>
-          <aside class="anatomy" aria-label="Dendrite architecture">
-            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">loopback only</span></div>
-            <div class="flow">
-              <div class="node"><b>Next.js graph UI</b><small>:3000</small></div>
-              <div class="edge">REST</div>
-              <div class="node core"><b>Go API server</b><small>:8080</small></div>
-              <div class="edge">serialized sync</div>
-              <div class="pair">
-                <div class="node"><b>Markdown vault</b><small>truth</small></div>
-                <div class="node"><b>SQLite</b><small>derived</small></div>
-              </div>
-            </div>
-            <div class="figures">
-              <div><b>6.8k</b><span>lines of Go</span></div>
-              <div><b>12</b><span>test files</span></div>
-              <div><b>0</b><span>cloud calls</span></div>
-            </div>
-          </aside>
-        </article>
-
-        <article class="spread" id="truehire">
-          <div>
-            <div class="spread-head"><h3>TrueHire</h3><span class="mono muted">03 / Flask · Celery · React</span></div>
-            <p class="lead">Technical recruiting where AI gathers <em>evidence</em> and people make the decision.</p>
-            <p>TrueHire pairs job-specific resume analysis with bounded evidence from a candidate's public GitHub, then puts both in front of a recruiter. It never accepts or rejects anyone on its own.</p>
-            <ul class="points">
-              <li>Screening runs in the background on Celery and Redis after every application</li>
-              <li>Resume and GitHub analysis are independent, durable, and retry with backoff</li>
-              <li>Recruiter auth, CSRF protection and organization-scoped data</li>
-              <li>Append-only audit trail of every stage change and retry</li>
-              <li>Alembic migrations, automated tests, linting and CI</li>
-            </ul>
-            <a class="cta" href="https://github.com/Zeusangis/prometheus">View on GitHub <span aria-hidden="true">↗</span></a>
-          </div>
-          <aside class="anatomy" aria-label="TrueHire architecture">
-            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">async pipeline</span></div>
-            <div class="flow">
-              <div class="node"><b>React + TypeScript</b><small>TanStack</small></div>
-              <div class="edge">REST</div>
-              <div class="node core"><b>Flask API</b><small>auth · orgs · audit</small></div>
-              <div class="edge">enqueue</div>
-              <div class="pair">
-                <div class="node"><b>Postgres</b><small>SQLAlchemy</small></div>
-                <div class="node"><b>Celery</b><small>Redis</small></div>
-              </div>
-              <div class="edge">bounded calls</div>
-              <div class="node"><b>Resume + GitHub analysis</b><small>Gemini · REST</small></div>
-            </div>
-            <div class="figures">
-              <div><b>136</b><span>backend tests</span></div>
-              <div><b>CI</b><span>every push</span></div>
-              <div><b>2s</b><span>live refresh</span></div>
-            </div>
-          </aside>
-        </article>
-
-        <article class="spread" id="athletex">
-          <div>
-            <div class="spread-head"><h3>AthleteX</h3><span class="mono muted">04 / Express · FastAPI · MediaPipe</span></div>
-            <p class="lead">Training load and ACL injury risk for a whole squad, <em>on one screen.</em></p>
-            <p>Athletes log a short daily check-in. Coaches see who has logged, who needs attention, and can score landing mechanics from a single jump video.</p>
-            <ul class="points">
-              <li>Pose detection measures knee flexion, knee valgus and trunk lean</li>
-              <li>Risk is scored low (0–1), moderate (2–3) or high (4+)</li>
-              <li>Coaches manage their athletes; athletes see only their own data</li>
-              <li>A training assistant answers questions from each athlete's profile and logs</li>
-            </ul>
-            <a class="cta" href="https://github.com/Zeusangis/Nexus">View on GitHub <span aria-hidden="true">↗</span></a>
-          </div>
-          <aside class="anatomy" aria-label="AthleteX architecture">
-            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">4 services</span></div>
-            <div class="flow">
-              <div class="node"><b>Next.js 15 app</b><small>:3001</small></div>
-              <div class="edge">JWT bearer</div>
-              <div class="node core"><b>Express + Prisma</b><small>:8000</small></div>
-              <div class="edge">service calls</div>
-              <div class="pair">
-                <div class="node"><b>ACL analysis</b><small>OpenCV</small></div>
-                <div class="node"><b>Assistant</b><small>LangChain</small></div>
-              </div>
-            </div>
-            <div class="figures">
-              <div><b>4</b><span>services</span></div>
-              <div><b>2</b><span>languages</span></div>
-              <div><b>3</b><span>joint angles</span></div>
-            </div>
-          </aside>
-        </article>
-
-      </div>
+      ))}
     </div>
   </section>
 
-  <!-- APPROACH -->
-  <section class="principles" id="approach">
+  <section class="band" id="principles">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="mono muted">How I build</span>
-        <h2>Past the <em>prototype</em></h2>
+      <div class="head">
+        <span class="label">How I build</span>
+        <div><h2>Past the prototype.</h2><p>Four habits, each with the project where it shows up.</p></div>
       </div>
       <ul class="rules">
-        <li><span class="mono muted">Data</span><div><div class="big">Migrate it. <em>Don't drop it.</em></div><p>Schema changes go through migrations, and old data keeps an owner. TrueHire ships Alembic migrations with legacy-data safeguards.</p></div></li>
-        <li><span class="mono muted">Failure</span><div><div class="big">Expect the provider to <em>blink.</em></div><p>Slow work runs on a queue, retries with backoff, and reports partial results honestly instead of failing the whole request.</p></div></li>
-        <li><span class="mono muted">Integrity</span><div><div class="big">Refuse the <em>stale</em> write.</div><p>Revision checks, atomic writes and strict paths, so two edits never silently overwrite each other. Dendrite answers a stale save with HTTP 409.</p></div></li>
-        <li><span class="mono muted">Proof</span><div><div class="big">Tests and CI, <em>not hope.</em></div><p>Behaviour is pinned by tests that run on every push, and the README says what the system does and does not promise.</p></div></li>
+        <li><h3>Migrate it, don't drop it.</h3><p>Schema changes go through versioned migrations, and existing data always keeps an owner.</p><code>TrueHire · Alembic migrations</code></li>
+        <li><h3>Expect the provider to fail.</h3><p>Slow work runs on a queue, retries with backoff, and reports partial results honestly.</p><code>TrueHire · Celery retries</code></li>
+        <li><h3>Refuse the stale write.</h3><p>Revision checks and atomic writes, so two edits never silently overwrite each other.</p><code>Dendrite · HTTP 409</code></li>
+        <li><h3>Rules before models.</h3><p>Decisions come from stated rules. AI writes words from checked facts and never makes the call.</p><code>ClimateCrop AI · rule-scored crops</code></li>
       </ul>
     </div>
   </section>
 
-  <!-- TOOLKIT -->
   <section id="toolkit">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="mono muted">Toolkit</span>
-        <h2>What I <em>reach for</em></h2>
-      </div>
-      <div class="kit">
-        <div><h3>Languages</h3><ul><li>Python <em>primary</em></li><li>Go <em>deepening</em></li><li>TypeScript</li><li>JavaScript</li><li>C</li></ul></div>
-        <div><h3>Backend</h3><ul><li>Django</li><li>Flask</li><li>FastAPI</li><li>Express</li><li>Celery</li></ul></div>
-        <div><h3>Data</h3><ul><li>PostgreSQL</li><li>MySQL</li><li>SQLite</li><li>Redis</li><li>SQLAlchemy, Prisma</li></ul></div>
-        <div><h3>Ship</h3><ul><li>Docker</li><li>Linux</li><li>Git &amp; GitHub</li><li>GitHub Actions</li><li>Bash</li></ul></div>
-      </div>
-
-      <div class="learning">
-        <div><span class="mono muted">Learning</span><h4>Idiomatic Go</h4><p>Services built on the standard library, goroutines and channels.</p></div>
-        <div><span class="mono muted">Learning</span><h4>Concurrency</h4><p>Locks, races and serialized work, starting with Dendrite's sync loop.</p></div>
-        <div><span class="mono muted">Learning</span><h4>Distributed systems</h4><p>Queues, idempotency, and what happens when a worker dies mid-job.</p></div>
-        <div><span class="mono muted">Learning</span><h4>Database internals</h4><p>Indexes, transactions, and how a row is actually stored.</p></div>
+      <div class="head"><span class="label">Toolkit</span><div><h2>What I reach for.</h2></div></div>
+      <div class="duo">
+        <dl class="kit">
+          <div><dt>Languages</dt><dd>Python, Go, TypeScript, JavaScript, C</dd></div>
+          <div><dt>Backend</dt><dd>Flask, Django, FastAPI, Express, Celery</dd></div>
+          <div><dt>Data</dt><dd>PostgreSQL, SQLite, MySQL, Redis, SQLAlchemy, Prisma</dd></div>
+          <div><dt>Shipping</dt><dd>Docker, Linux, GitHub Actions, Cloudflare</dd></div>
+        </dl>
+        <div>
+          <h3>Currently learning</h3>
+          <ul class="now">
+            <li><strong>Idiomatic Go.</strong> Services on the standard library, goroutines and channels.</li>
+            <li><strong>Concurrency.</strong> Locks, races and serialized work, starting with Dendrite's sync loop.</li>
+            <li><strong>Distributed systems.</strong> Queues, idempotency, and what happens when a worker dies mid-job.</li>
+            <li><strong>Database internals.</strong> Indexes, transactions, and how a row is actually stored.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
-  {latest.length > 0 && (
-    <section id="writing" style="padding-top: 0">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="mono muted">Writing</span>
-          <h2>Latest <em>notes</em></h2>
-        </div>
-        <ol class="index posts">
-          {latest.map((post, i) => (
-            <li>
-              <a href={`${base}blog/${post.id}/`}>
-                <span class="no muted">{String(i + 1).padStart(2, '0')}</span>
-                <span class="ttl">{post.data.title}<span class="desc muted">{post.data.description}</span></span>
-                <span class="meta mono muted"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></span>
-              </a>
-            </li>
-          ))}
-        </ol>
-        <a class="cta" href={`${base}blog/`}>All posts <span aria-hidden="true">→</span></a>
-      </div>
-    </section>
-  )}
-
-  <!-- CONTACT -->
-  <section class="contact" id="contact">
+  <section id="writing">
     <div class="wrap">
-      <span class="mono muted">Contact</span>
-      <p class="sign">Let's build something that <em>stays up.</em></p>
-      <nav class="socials" aria-label="Profiles">
-        <a href="https://www.linkedin.com/in/unish-khadka-642206280/"><b>LinkedIn <i aria-hidden="true">↗</i></b><span class="mono muted">in/unish-khadka</span></a>
-        <a href="https://github.com/Zeusangis"><b>GitHub <i aria-hidden="true">↗</i></b><span class="mono muted">@Zeusangis</span></a>
-        <a href="https://x.com/unish_khadka"><b>X <i aria-hidden="true">↗</i></b><span class="mono muted">@unish_khadka</span></a>
-        <a href="https://instagram.com/unish.khadka.14"><b>Instagram <i aria-hidden="true">↗</i></b><span class="mono muted">@unish.khadka.14</span></a>
-      </nav>
+      <div class="head"><span class="label">Writing</span><div><h2>Notes from the backend.</h2></div></div>
+      <div class="row">
+        <span></span>
+        <div>
+          {latest.length === 0 ? (
+            <p class="empty">Short write-ups on what I build and what broke along the way. The first post is in progress.</p>
+          ) : (
+            <>
+              <ol class="posts">
+                {latest.map((post) => (
+                  <li>
+                    <a href={`${base}blog/${post.id}/`}>
+                      <span class="t">{post.data.title}</span>
+                      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+                      <span class="d">{post.data.description}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+              <a class="link more" href={`${base}blog/`}>All writing</a>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap reach">
+      <div>
+        <span class="label">Contact</span>
+        <h2 style="margin-top:12px">Looking for a backend intern?</h2>
+        <p>I'm available for backend internships. If you're hiring, or want to talk about databases and queues, I'd like to hear from you.</p>
+      </div>
+      <ul class="channels">
+        <li><a href="https://www.linkedin.com/in/unish-khadka-642206280/">LinkedIn <span>in/unish-khadka ↗</span></a></li>
+        <li><a href="https://github.com/Zeusangis">GitHub <span>@Zeusangis ↗</span></a></li>
+        <li><a href="https://x.com/unish_khadka">X <span>@unish_khadka ↗</span></a></li>
+        <li><a href="https://instagram.com/unish.khadka.14">Instagram <span>@unish.khadka.14 ↗</span></a></li>
+      </ul>
     </div>
   </section>
 </Base>
