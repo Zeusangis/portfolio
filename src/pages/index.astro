@@ -1,0 +1,270 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPosts, formatDate } from '../lib/posts';
+
+const base = import.meta.env.BASE_URL;
+const latest = (await getPosts()).filter((post) => !post.data.draft).slice(0, 3);
+const marquee = ['Python', 'Go', 'PostgreSQL', 'Redis', 'Django', 'Flask', 'FastAPI', 'Celery', 'SQLite', 'TypeScript', 'Docker', 'Linux'];
+---
+<Base>
+  <div class="wrap hero">
+    <div class="hero-meta">
+      <div><span class="mono muted">Role</span><span>Backend developer</span></div>
+      <div><span class="mono muted">Studying</span><span>Computer Science, ULM</span></div>
+      <div><span class="mono muted">Writes</span><span>Python, Go, TypeScript</span></div>
+      <div><span class="mono muted">Now</span><span><i class="dot" aria-hidden="true"></i>Going deeper on Go</span></div>
+    </div>
+
+    <h1 class="name" aria-label="Unish Khadka">
+      <span class="row"><span>Unish</span></span>
+      <span class="row"><span><em>K</em>hadka</span></span>
+    </h1>
+
+    <div class="hero-foot">
+      <p class="statement">Building the systems <em>behind</em> the screen.</p>
+      <p class="intro">I'm a computer science student at the <b>University of Louisiana Monroe</b> who builds APIs, databases and background workers, and keeps building after the prototype works.</p>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      {[...marquee, ...marquee].map((word, i) => <span class={i % 2 ? 'it' : undefined}>{word}</span>)}
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono muted">Index · 4 projects</span>
+        <h2>Selected <em>work</em></h2>
+      </div>
+
+      <ol class="index">
+        <li><a href="#climatecrop"><span class="no muted">01</span><span class="ttl">ClimateCrop AI <em>planting decisions from climate data</em></span><span class="meta mono muted"><span>Flask · Next.js</span></span></a></li>
+        <li><a href="#dendrite"><span class="no muted">02</span><span class="ttl">Dendrite <em>local-first knowledge graph</em></span><span class="meta mono muted"><span>Go · SQLite</span></span></a></li>
+        <li><a href="#truehire"><span class="no muted">03</span><span class="ttl">TrueHire <em>evidence-first recruiting</em></span><span class="meta mono muted"><span>Flask · Celery</span></span></a></li>
+        <li><a href="#athletex"><span class="no muted">04</span><span class="ttl">AthleteX <em>ACL injury risk</em></span><span class="meta mono muted"><span>Express · MediaPipe</span></span></a></li>
+      </ol>
+
+      <div style="margin-top: clamp(64px, 9vw, 120px)">
+
+        <article class="spread" id="climatecrop">
+          <div>
+            <div class="spread-head"><h3>ClimateCrop AI</h3><span class="mono muted">01 / Flask · Next.js · Gemini</span></div>
+            <p class="lead">Turns public climate and crop records into planting decisions <em>for one farm.</em></p>
+            <p>A farmer saves their farm once. The app ranks which of 30 crops fit, finds when to plant, compares last season against the outlook, and follows a crop from sowing to harvest with an expert alongside. Every number comes from a named source; AI only writes advice from facts the app hands it. Built with a teammate for TechXpo 2026 at ULM.</p>
+            <ul class="points">
+              <li>Crop fit is scored by stated rules against a 30-year NASA POWER climate normal, and each result shows its numbers</li>
+              <li>Expert advice must match a fixed format and is rejected if it gives a chemical dose or a number not in the facts</li>
+              <li>Field alerts for frost, heat, heavy rain and dry spells from the real forecast</li>
+              <li>Leaf-photo disease checks with Pl@ntNet, with Gemini as a second look when unsure</li>
+              <li>Cookie auth through a same-origin proxy, CI on every push, Render and Vercel deploys</li>
+            </ul>
+            <a class="cta" href="https://github.com/Zeusangis/ClimateCrop-AI">View on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+          <aside class="anatomy" aria-label="ClimateCrop AI architecture">
+            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">rules first, AI last</span></div>
+            <div class="flow">
+              <div class="node"><b>Next.js app</b><small>Vercel</small></div>
+              <div class="edge">REST · session cookie</div>
+              <div class="node core"><b>Flask API</b><small>rules · journeys · expert</small></div>
+              <div class="edge">sourced data</div>
+              <div class="pair">
+                <div class="node"><b>Climate</b><small>NASA · Open-Meteo</small></div>
+                <div class="node"><b>Crops</b><small>FAO ECOCROP</small></div>
+              </div>
+              <div class="edge">fact sheet only</div>
+              <div class="node"><b>AI advice</b><small>Gemini · Pl@ntNet</small></div>
+            </div>
+            <div class="figures">
+              <div><b>30</b><span>crops scored</span></div>
+              <div><b>144</b><span>automated tests</span></div>
+              <div><b>7</b><span>data sources</span></div>
+            </div>
+          </aside>
+        </article>
+
+        <article class="spread" id="dendrite">
+          <div>
+            <div class="spread-head"><h3>Dendrite</h3><span class="mono muted">02 / Go · SQLite · Next.js</span></div>
+            <p class="lead">A knowledge graph for Markdown notes that runs <em>entirely</em> on your own machine.</p>
+            <p>Your Markdown vault stays the source of truth. Dendrite watches it, builds a searchable and explainable graph of notes, links and related activity, and keeps every derived byte outside the vault.</p>
+            <ul class="points">
+              <li>Background sync picks up edits made outside the app, serialized with API writes</li>
+              <li>Atomic same-directory writes, strict vault paths and symlink rejection</li>
+              <li>Revision checks reject stale saves and deletes with HTTP 409</li>
+              <li>Full-text search, wikilinks, aliases, backlinks, undo and redo</li>
+              <li>Optional activity graph that never records keystrokes or page contents</li>
+            </ul>
+            <a class="cta" href="https://github.com/Zeusangis/Dendrite">View on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+          <aside class="anatomy" aria-label="Dendrite architecture">
+            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">loopback only</span></div>
+            <div class="flow">
+              <div class="node"><b>Next.js graph UI</b><small>:3000</small></div>
+              <div class="edge">REST</div>
+              <div class="node core"><b>Go API server</b><small>:8080</small></div>
+              <div class="edge">serialized sync</div>
+              <div class="pair">
+                <div class="node"><b>Markdown vault</b><small>truth</small></div>
+                <div class="node"><b>SQLite</b><small>derived</small></div>
+              </div>
+            </div>
+            <div class="figures">
+              <div><b>6.8k</b><span>lines of Go</span></div>
+              <div><b>12</b><span>test files</span></div>
+              <div><b>0</b><span>cloud calls</span></div>
+            </div>
+          </aside>
+        </article>
+
+        <article class="spread" id="truehire">
+          <div>
+            <div class="spread-head"><h3>TrueHire</h3><span class="mono muted">03 / Flask · Celery · React</span></div>
+            <p class="lead">Technical recruiting where AI gathers <em>evidence</em> and people make the decision.</p>
+            <p>TrueHire pairs job-specific resume analysis with bounded evidence from a candidate's public GitHub, then puts both in front of a recruiter. It never accepts or rejects anyone on its own.</p>
+            <ul class="points">
+              <li>Screening runs in the background on Celery and Redis after every application</li>
+              <li>Resume and GitHub analysis are independent, durable, and retry with backoff</li>
+              <li>Recruiter auth, CSRF protection and organization-scoped data</li>
+              <li>Append-only audit trail of every stage change and retry</li>
+              <li>Alembic migrations, automated tests, linting and CI</li>
+            </ul>
+            <a class="cta" href="https://github.com/Zeusangis/prometheus">View on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+          <aside class="anatomy" aria-label="TrueHire architecture">
+            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">async pipeline</span></div>
+            <div class="flow">
+              <div class="node"><b>React + TypeScript</b><small>TanStack</small></div>
+              <div class="edge">REST</div>
+              <div class="node core"><b>Flask API</b><small>auth · orgs · audit</small></div>
+              <div class="edge">enqueue</div>
+              <div class="pair">
+                <div class="node"><b>Postgres</b><small>SQLAlchemy</small></div>
+                <div class="node"><b>Celery</b><small>Redis</small></div>
+              </div>
+              <div class="edge">bounded calls</div>
+              <div class="node"><b>Resume + GitHub analysis</b><small>Gemini · REST</small></div>
+            </div>
+            <div class="figures">
+              <div><b>136</b><span>backend tests</span></div>
+              <div><b>CI</b><span>every push</span></div>
+              <div><b>2s</b><span>live refresh</span></div>
+            </div>
+          </aside>
+        </article>
+
+        <article class="spread" id="athletex">
+          <div>
+            <div class="spread-head"><h3>AthleteX</h3><span class="mono muted">04 / Express · FastAPI · MediaPipe</span></div>
+            <p class="lead">Training load and ACL injury risk for a whole squad, <em>on one screen.</em></p>
+            <p>Athletes log a short daily check-in. Coaches see who has logged, who needs attention, and can score landing mechanics from a single jump video.</p>
+            <ul class="points">
+              <li>Pose detection measures knee flexion, knee valgus and trunk lean</li>
+              <li>Risk is scored low (0–1), moderate (2–3) or high (4+)</li>
+              <li>Coaches manage their athletes; athletes see only their own data</li>
+              <li>A training assistant answers questions from each athlete's profile and logs</li>
+            </ul>
+            <a class="cta" href="https://github.com/Zeusangis/Nexus">View on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+          <aside class="anatomy" aria-label="AthleteX architecture">
+            <div class="anatomy-head"><span class="mono muted">Anatomy</span><span class="mono muted">4 services</span></div>
+            <div class="flow">
+              <div class="node"><b>Next.js 15 app</b><small>:3001</small></div>
+              <div class="edge">JWT bearer</div>
+              <div class="node core"><b>Express + Prisma</b><small>:8000</small></div>
+              <div class="edge">service calls</div>
+              <div class="pair">
+                <div class="node"><b>ACL analysis</b><small>OpenCV</small></div>
+                <div class="node"><b>Assistant</b><small>LangChain</small></div>
+              </div>
+            </div>
+            <div class="figures">
+              <div><b>4</b><span>services</span></div>
+              <div><b>2</b><span>languages</span></div>
+              <div><b>3</b><span>joint angles</span></div>
+            </div>
+          </aside>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section class="principles" id="approach">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono muted">How I build</span>
+        <h2>Past the <em>prototype</em></h2>
+      </div>
+      <ul class="rules">
+        <li><span class="mono muted">Data</span><div><div class="big">Migrate it. <em>Don't drop it.</em></div><p>Schema changes go through migrations, and old data keeps an owner. TrueHire ships Alembic migrations with legacy-data safeguards.</p></div></li>
+        <li><span class="mono muted">Failure</span><div><div class="big">Expect the provider to <em>blink.</em></div><p>Slow work runs on a queue, retries with backoff, and reports partial results honestly instead of failing the whole request.</p></div></li>
+        <li><span class="mono muted">Integrity</span><div><div class="big">Refuse the <em>stale</em> write.</div><p>Revision checks, atomic writes and strict paths, so two edits never silently overwrite each other. Dendrite answers a stale save with HTTP 409.</p></div></li>
+        <li><span class="mono muted">Proof</span><div><div class="big">Tests and CI, <em>not hope.</em></div><p>Behaviour is pinned by tests that run on every push, and the README says what the system does and does not promise.</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TOOLKIT -->
+  <section id="toolkit">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono muted">Toolkit</span>
+        <h2>What I <em>reach for</em></h2>
+      </div>
+      <div class="kit">
+        <div><h3>Languages</h3><ul><li>Python <em>primary</em></li><li>Go <em>deepening</em></li><li>TypeScript</li><li>JavaScript</li><li>C</li></ul></div>
+        <div><h3>Backend</h3><ul><li>Django</li><li>Flask</li><li>FastAPI</li><li>Express</li><li>Celery</li></ul></div>
+        <div><h3>Data</h3><ul><li>PostgreSQL</li><li>MySQL</li><li>SQLite</li><li>Redis</li><li>SQLAlchemy, Prisma</li></ul></div>
+        <div><h3>Ship</h3><ul><li>Docker</li><li>Linux</li><li>Git &amp; GitHub</li><li>GitHub Actions</li><li>Bash</li></ul></div>
+      </div>
+
+      <div class="learning">
+        <div><span class="mono muted">Learning</span><h4>Idiomatic Go</h4><p>Services built on the standard library, goroutines and channels.</p></div>
+        <div><span class="mono muted">Learning</span><h4>Concurrency</h4><p>Locks, races and serialized work, starting with Dendrite's sync loop.</p></div>
+        <div><span class="mono muted">Learning</span><h4>Distributed systems</h4><p>Queues, idempotency, and what happens when a worker dies mid-job.</p></div>
+        <div><span class="mono muted">Learning</span><h4>Database internals</h4><p>Indexes, transactions, and how a row is actually stored.</p></div>
+      </div>
+    </div>
+  </section>
+
+  {latest.length > 0 && (
+    <section id="writing" style="padding-top: 0">
+      <div class="wrap">
+        <div class="sec-head">
+          <span class="mono muted">Writing</span>
+          <h2>Latest <em>notes</em></h2>
+        </div>
+        <ol class="index posts">
+          {latest.map((post, i) => (
+            <li>
+              <a href={`${base}blog/${post.id}/`}>
+                <span class="no muted">{String(i + 1).padStart(2, '0')}</span>
+                <span class="ttl">{post.data.title}<span class="desc muted">{post.data.description}</span></span>
+                <span class="meta mono muted"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></span>
+              </a>
+            </li>
+          ))}
+        </ol>
+        <a class="cta" href={`${base}blog/`}>All posts <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  )}
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <span class="mono muted">Contact</span>
+      <p class="sign">Let's build something that <em>stays up.</em></p>
+      <nav class="socials" aria-label="Profiles">
+        <a href="https://www.linkedin.com/in/unish-khadka-642206280/"><b>LinkedIn <i aria-hidden="true">↗</i></b><span class="mono muted">in/unish-khadka</span></a>
+        <a href="https://github.com/Zeusangis"><b>GitHub <i aria-hidden="true">↗</i></b><span class="mono muted">@Zeusangis</span></a>
+        <a href="https://x.com/unish_khadka"><b>X <i aria-hidden="true">↗</i></b><span class="mono muted">@unish_khadka</span></a>
+        <a href="https://instagram.com/unish.khadka.14"><b>Instagram <i aria-hidden="true">↗</i></b><span class="mono muted">@unish.khadka.14</span></a>
+      </nav>
+    </div>
+  </section>
+</Base>

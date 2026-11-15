@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, formatDate } from '../../lib/posts';
+
+const posts = await getPosts();
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Blog" description="Notes from Unish Khadka on backend engineering, Go, databases and the projects behind this portfolio." current="blog">
+  <section style="border-top: 0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono muted">Writing · {posts.length} {posts.length === 1 ? 'post' : 'posts'}</span>
+        <h1>Notes from the <em>backend</em></h1>
+      </div>
+
+      {posts.length === 0 ? (
+        <p class="empty">Nothing published yet. The first post is on its way.</p>
+      ) : (
+        <ol class="index posts">
+          {posts.map((post, i) => (
+            <li>
+              <a href={`${base}blog/${post.id}/`}>
+                <span class="no muted">{String(posts.length - i).padStart(2, '0')}</span>
+                <span class="ttl">
+                  {post.data.title}{post.data.draft && <em>draft</em>}
+                  <span class="desc muted">{post.data.description}</span>
+                </span>
+                <span class="meta mono muted"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  </section>
+</Base>
