@@ -1,10 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Deployed to GitHub Pages as a user site (repo named <username>.github.io), so it lives at the root.
-// If the repo gets a different name, also set `base: '/<repo-name>'`.
+// Deployed to GitHub Pages on the custom domain in public/CNAME, so the site lives at the root
+// whatever the repo is called.
 export default defineConfig({
-  site: 'https://zeusangis.github.io',
+  site: 'https://unishkhadka.com.np',
   markdown: {
     shikiConfig: {
       themes: { light: 'github-light', dark: 'github-dark' },
