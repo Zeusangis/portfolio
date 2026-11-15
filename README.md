@@ -1,6 +1,6 @@
 # unish.khadka
 
-Portfolio and blog, built with [Astro](https://astro.build) and deployed to GitHub Pages.
+Portfolio and blog at [unishkhadka.com.np](https://unishkhadka.com.np), built with [Astro](https://astro.build) and deployed on Cloudflare Pages.
 
 ## Run it
 
@@ -26,7 +26,7 @@ npm run build    # static site in dist/, drafts left out
    ---
    ```
 
-3. Preview with `npm run dev`. When it's ready, remove `draft: true`, then commit and push. GitHub Actions rebuilds and deploys the site.
+3. Preview with `npm run dev`. When it's ready, remove `draft: true`, then commit and push. Cloudflare Pages rebuilds and deploys the site.
 
 `src/content/blog/how-to-write-a-post.md` is a draft template showing the styled Markdown.
 
@@ -39,4 +39,4 @@ npm run build    # static site in dist/, drafts left out
 | `src/layouts/Base.astro` | Shared `<head>`, nav and footer |
 | `src/styles/global.css` | All styles |
 | `src/content.config.ts` | Blog post front matter schema |
-| `.github/workflows/deploy.yml` | Build and deploy to GitHub Pages on every push to `main` |
+| `.node-version` | Node version Cloudflare Pages builds with |
