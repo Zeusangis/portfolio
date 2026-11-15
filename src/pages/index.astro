@@ -21,7 +21,7 @@ const spans = [
 
 const projects = [
   {
-    id: 'climatecrop', name: 'ClimateCrop AI', href: 'https://github.com/Zeusangis/ClimateCrop-AI', lead: true,
+    id: 'climatecrop', name: 'ClimateCrop AI', line: 'Planting decisions for one farm from public climate and crop data.', href: 'https://github.com/Zeusangis/ClimateCrop-AI', lead: true,
     meta: ['TechXpo 2026', 'Team of two', 'Flask · Next.js · Gemini'],
     summary: 'Turns public climate and crop records into planting decisions for one farm. It ranks which of 30 crops fit, finds when to plant, and follows a crop from sowing to harvest.',
     points: [
@@ -34,7 +34,7 @@ const projects = [
     numbers: [['144', 'tests'], ['30', 'crops scored'], ['7', 'data sources']],
   },
   {
-    id: 'dendrite', name: 'Dendrite', href: 'https://github.com/Zeusangis/Dendrite',
+    id: 'dendrite', name: 'Dendrite', line: 'A local-first knowledge graph for Markdown notes.', href: 'https://github.com/Zeusangis/Dendrite',
     meta: ['Local-first knowledge graph', 'Go · SQLite · Next.js'],
     summary: 'A knowledge graph for Markdown notes that runs entirely on your machine. The vault stays the source of truth; Dendrite builds a searchable graph on top of it.',
     points: [
@@ -47,7 +47,7 @@ const projects = [
     numbers: [['6.8k', 'lines of Go'], ['12', 'test files'], ['0', 'cloud services']],
   },
   {
-    id: 'truehire', name: 'TrueHire', href: 'https://github.com/Zeusangis/prometheus',
+    id: 'truehire', name: 'TrueHire', line: 'Recruiting where AI gathers evidence and people decide.', href: 'https://github.com/Zeusangis/prometheus',
     meta: ['Evidence-first recruiting', 'Flask · Celery · Redis · React'],
     summary: "Pairs job-specific resume analysis with bounded evidence from a candidate's public GitHub. AI supplies evidence for a human decision; it never accepts or rejects anyone on its own.",
     points: [
@@ -60,7 +60,7 @@ const projects = [
     numbers: [['136', 'backend tests'], ['CI', 'every push'], ['2 s', 'live refresh']],
   },
   {
-    id: 'athletex', name: 'AthleteX', href: 'https://github.com/Zeusangis/Nexus',
+    id: 'athletex', name: 'AthleteX', line: 'Training load and ACL injury risk for a whole squad.', href: 'https://github.com/Zeusangis/Nexus',
     meta: ['Training load and ACL risk', 'Express · FastAPI · MediaPipe'],
     summary: 'Coaches see a whole squad on one screen and score landing mechanics from a single jump video.',
     points: [
@@ -112,32 +112,43 @@ const projects = [
   <section id="work" style="border-top:0">
     <div class="wrap">
       <div class="head">
-        <span class="label">Selected work</span>
-        <div><h2>Four projects, strongest first.</h2><p>Each one shipped with tests, and each taught me something the one before it didn't.</p></div>
+        <span class="label">Work</span>
+        <div><h2>Projects</h2></div>
       </div>
 
-      {projects.map((p) => (
-        <article class="writeup" id={p.id}>
-          <div>
-            <div class="meta">{p.lead && <span class="lead">Latest</span>}{p.meta.map((m) => <span>{m}</span>)}</div>
-            <h3><a href={p.href}>{p.name}</a></h3>
-            <p>{p.summary}</p>
-            <ul>{p.points.map((pt) => <li>{pt}</li>)}</ul>
-            <div class="foot"><a class="link" href={p.href}>Source on GitHub</a></div>
-          </div>
-          <aside class="anatomy" aria-label={`${p.name} architecture`}>
-            <div class="cap"><span>How it fits together</span><span>{p.cap}</span></div>
-            <div class="flow">
-              {p.flow.map((step) =>
-                typeof step === 'string' ? <div class="edge">{step}</div>
-                : Array.isArray(step[0]) ? <div class="pair">{(step as [string, string][]).map(([b, s]) => <div class="node"><b>{b}</b><small>{s}</small></div>)}</div>
-                : <div class={step[2] ? 'node core' : 'node'}><b>{step[0]}</b><small>{step[1]}</small></div>
-              )}
+      <div class="plist">
+        {projects.map((p) => (
+          <details class="prow" id={p.id}>
+            <summary>
+              <span class="p-name">
+                <span class="p-title">{p.name}{p.lead && <span class="badge">Latest</span>}</span>
+                <span class="p-line">{p.line}</span>
+              </span>
+              <span class="p-nums">{p.numbers.map(([v, l]) => <span><b>{v}</b> {l}</span>)}</span>
+              <span class="p-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="p-detail">
+              <div>
+                <div class="meta">{p.meta.map((m) => <span>{m}</span>)}</div>
+                <p>{p.summary}</p>
+                <ul>{p.points.map((pt) => <li>{pt}</li>)}</ul>
+                <div class="foot"><a class="link" href={p.href}>Source on GitHub</a></div>
+              </div>
+              <aside class="anatomy" aria-label={`${p.name} architecture`}>
+                <div class="cap"><span>How it fits together</span><span>{p.cap}</span></div>
+                <div class="flow">
+                  {p.flow.map((step) =>
+                    typeof step === 'string' ? <div class="edge">{step}</div>
+                    : Array.isArray(step[0]) ? <div class="pair">{(step as [string, string][]).map(([b, sm]) => <div class="node"><b>{b}</b><small>{sm}</small></div>)}</div>
+                    : <div class={step[2] ? 'node core' : 'node'}><b>{step[0]}</b><small>{step[1]}</small></div>
+                  )}
+                </div>
+              </aside>
             </div>
-            <div class="numbers">{p.numbers.map(([v, l]) => <div><b>{v}</b><span>{l}</span></div>)}</div>
-          </aside>
-        </article>
-      ))}
+          </details>
+        ))}
+      </div>
+      <p class="hint">Click a project for details and its architecture.</p>
     </div>
   </section>
 
