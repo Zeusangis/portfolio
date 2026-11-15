@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Unish Khadka</title>
+    <meta name="claude:viewport-fit-sides" content="cover">
+    <meta name="description"
+        content="Unish Khadka is a computer science student and backend developer building APIs, databases and software that solves real problems.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+    <style>
+        /* Layout: the page is one traced request. The hero is a span waterfall whose rows are the sections below;
+   each project is drawn as the services it is made of. Cool schematic paper, one cobalt signal colour. */
+        :root {
+            --paper: #eef1f5;
+            --surface: #f8fafc;
+            --ink: #121c28;
+            --ink-2: #47566a;
+            --rule: #cfd7e1;
+            --signal: #2346d1;
+            --signal-soft: #dfe5fb;
+            --ok: #13795b;
+            --span-a: #2346d1;
+            --span-b: #5b74db;
+            --span-c: #93a4e6;
+
+            --font-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+            --font-body: "IBM Plex Sans", "Segoe UI", Roboto, sans-serif;
+            --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+            --step--1: 0.8125rem;
+            --step-0: 1rem;
+            --step-1: 1.25rem;
+            --step-2: 1.625rem;
+            --step-3: clamp(2.1rem, 5vw, 3.4rem);
+
+            --gutter: max(16px, env(safe-area-inset-left, 0px));
+            --measure: 66ch;
+            color-scheme: light;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --paper: #0d131b;
+                --surface: #141c27;
+                --ink: #dfe6ee;
+                --ink-2: #93a2b5;
+                --rule: #263243;
+                --signal: #8aa2ff;
+                --signal-soft: #1c2747;
+                --ok: #4cc79a;
+                --span-a: #8aa2ff;
+                --span-b: #6278cf;
+                --span-c: #3f4f8c;
+                color-scheme: dark;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --paper: #0d131b;
+            --surface: #141c27;
+            --ink: #dfe6ee;
+            --ink-2: #93a2b5;
+            --rule: #263243;
+            --signal: #8aa2ff;
+            --signal-soft: #1c2747;
+            --ok: #4cc79a;
+            --span-a: #8aa2ff;
+            --span-b: #6278cf;
+            --span-c: #3f4f8c;
+            color-scheme: dark;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+            font-size: var(--step-0);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--signal);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        .wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+        }
+
+        .label {
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ink-2);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-display);
+            text-wrap: balance;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        /* ---------- top bar ---------- */
+        .top {
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .top .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 24px;
+            align-items: center;
+            justify-content: space-between;
+            padding-block: 14px;
+        }
+
+        .brand {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: var(--ink-2);
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            color: var(--ink-2);
+        }
+
+        .status::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ok);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent);
+        }
+
+        /* ---------- hero ---------- */
+        .hero {
+            padding-block: clamp(40px, 7vw, 80px) 32px;
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: 40px;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 900px) {
+            .hero-grid {
+                grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+                align-items: end;
+            }
+        }
+
+        .hero h1 {
+            font-size: var(--step-3);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            color: var(--signal);
+        }
+
+        .hero p.lede {
+            font-size: var(--step-1);
+            color: var(--ink-2);
+            max-width: 34ch;
+            margin: 18px 0 0;
+            line-height: 1.45;
+        }
+
+        .hero .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            margin-top: 24px;
+        }
+
+        .hero .meta div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .hero .meta b {
+            font-weight: 500;
+        }
+
+        /* trace waterfall */
+        .trace {
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 10px;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .trace-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--rule);
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            color: var(--ink-2);
+        }
+
+        .trace-head b {
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .trace-body {
+            padding: 6px 0 10px;
+        }
+
+        .axis,
+        .span {
+            display: grid;
+            grid-template-columns: minmax(0, 11.5rem) minmax(0, 1fr) 3.4rem;
+            gap: 12px;
+            align-items: center;
+            padding: 0 16px;
+        }
+
+        .axis {
+            height: 26px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--ink-2);
+        }
+
+        .ticks {
+            position: relative;
+            height: 100%;
+        }
+
+        .ticks span {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ticks span:first-child {
+            transform: translate(0, -50%);
+        }
+
+        .ticks span:last-child {
+            transform: translate(-100%, -50%);
+        }
+
+        .span {
+            height: 30px;
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+        }
+
+        .span:hover {
+            background: var(--signal-soft);
+        }
+
+        .span .name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .span .name i {
+            font-style: normal;
+            color: var(--ink-2);
+        }
+
+        .span[data-depth="1"] .name {
+            padding-left: 14px;
+        }
+
+        .span[data-depth="2"] .name {
+            padding-left: 28px;
+        }
+
+        .span .track {
+            position: relative;
+            height: 100%;
+            background-image: linear-gradient(to right, var(--rule) 1px, transparent 1px);
+            background-size: 25% 100%;
+        }
+
+        .span .bar {
+            position: absolute;
+            top: 9px;
+            height: 12px;
+            border-radius: 3px;
+            left: calc(var(--s) * 1%);
+            width: calc(var(--d) * 1%);
+            background: var(--span-a);
+            transform-origin: left center;
+            animation: grow .6s cubic-bezier(.2, .7, .2, 1) both;
+            animation-delay: calc(var(--s) * 9ms);
+        }
+
+        .span[data-depth="1"] .bar {
+            background: var(--span-b);
+        }
+
+        .span[data-depth="2"] .bar {
+            background: var(--span-c);
+        }
+
+        .span .ms {
+            text-align: right;
+            color: var(--ink-2);
+            font-variant-numeric: tabular-nums;
+        }
+
+        @keyframes grow {
+            from {
+                transform: scaleX(0.15);
+            }
+
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        /* ---------- sections ---------- */
+        section {
+            padding-block: clamp(48px, 7vw, 88px);
+            border-top: 1px solid var(--rule);
+            scroll-margin-top: 8px;
+        }
+
+        .sec-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 6px 16px;
+            margin-bottom: 28px;
+        }
+
+        .sec-head h2 {
+            font-size: var(--step-2);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .sec-head .label {
+            order: -1;
+            width: 100%;
+        }
+
+        /* about */
+        .about-grid {
+            display: grid;
+            gap: 32px;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 860px) {
+            .about-grid {
+                grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+            }
+        }
+
+        .about-grid p {
+            max-width: var(--measure);
+            margin: 0 0 1em;
+        }
+
+        .about-grid p:first-child {
+            font-size: var(--step-1);
+            line-height: 1.5;
+        }
+
+        .facts {
+            margin: 0;
+            display: grid;
+            gap: 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        .facts div {
+            display: grid;
+            grid-template-columns: 8.5rem minmax(0, 1fr);
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .facts dt {
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            color: var(--ink-2);
+            padding-top: 2px;
+        }
+
+        .facts dd {
+            margin: 0;
+        }
+
+        /* projects */
+        .projects {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .project {
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 10px;
+            padding: clamp(20px, 3vw, 32px);
+            display: grid;
+            gap: 20px;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 900px) {
+            .project {
+                grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+                gap: 36px;
+            }
+        }
+
+        .project-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 6px 14px;
+        }
+
+        .project h3 {
+            font-size: var(--step-2);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .project h3 a {
+            text-decoration: none;
+        }
+
+        .project h3 a:hover {
+            color: var(--signal);
+        }
+
+        .project .kind {
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            color: var(--ink-2);
+        }
+
+        .project p {
+            margin: 12px 0 0;
+            max-width: 60ch;
+        }
+
+        .project ul {
+            margin: 14px 0 0;
+            padding-left: 1.1em;
+            display: grid;
+            gap: 4px;
+            max-width: 60ch;
+        }
+
+        .project li::marker {
+            color: var(--signal);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 16px;
+        }
+
+        .tag {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            color: var(--ink-2);
+        }
+
+        .repo-link {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            margin-top: 18px;
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            color: var(--signal);
+            text-decoration: none;
+        }
+
+        .repo-link:hover {
+            text-decoration: underline;
+        }
+
+        /* architecture strip */
+        .arch {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .arch .label {
+            margin-bottom: 2px;
+        }
+
+        .flow {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        .node {
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: var(--paper);
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        .node b {
+            font-weight: 600;
+        }
+
+        .node small {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--ink-2);
+            align-self: center;
+        }
+
+        .node.accent {
+            border-color: var(--signal);
+        }
+
+        .link {
+            height: 18px;
+            margin-left: 22px;
+            border-left: 1px dashed var(--ink-2);
+            position: relative;
+        }
+
+        .link span {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--ink-2);
+        }
+
+        .fork {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 8px;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 24px;
+            margin-top: 8px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat b {
+            font-family: var(--font-display);
+            font-size: var(--step-1);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stat span {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--ink-2);
+        }
+
+        /* stack */
+        .stack {
+            display: grid;
+            gap: 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        .stack-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 8px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        @media (min-width: 720px) {
+            .stack-row {
+                grid-template-columns: 12rem minmax(0, 1fr);
+                gap: 24px;
+                align-items: baseline;
+            }
+        }
+
+        .stack-row ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 22px;
+        }
+
+        .stack-row li {
+            font-weight: 500;
+        }
+
+        .stack-row li small {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--ink-2);
+            margin-left: 6px;
+            font-weight: 400;
+        }
+
+        /* learning */
+        .queue {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+        }
+
+        .job {
+            border: 1px solid var(--rule);
+            border-radius: 8px;
+            padding: 16px;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .job .label {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .job .label .st {
+            color: var(--signal);
+        }
+
+        .job h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .job p {
+            margin: 0;
+            color: var(--ink-2);
+            font-size: 0.92rem;
+        }
+
+        /* contact */
+        .contact-grid {
+            display: grid;
+            gap: 28px;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        @media (min-width: 860px) {
+            .contact-grid {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                align-items: start;
+            }
+        }
+
+        .contact-grid p.big {
+            font-family: var(--font-display);
+            font-size: var(--step-2);
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0;
+            max-width: 22ch;
+            text-wrap: balance;
+        }
+
+        .links {
+            display: grid;
+            border-top: 1px solid var(--rule);
+        }
+
+        .links a {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--rule);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .links a span {
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            color: var(--ink-2);
+            font-weight: 400;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+        }
+
+        .links a:hover {
+            color: var(--signal);
+        }
+
+        .links a:hover span {
+            color: var(--signal);
+        }
+
+        footer {
+            border-top: 1px solid var(--rule);
+        }
+
+        footer .wrap {
+            padding-block: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
+            color: var(--ink-2);
+        }
+
+        @media (max-width: 560px) {
+
+            .axis,
+            .span {
+                grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr) 2.8rem;
+                gap: 8px;
+                padding: 0 12px;
+            }
+
+            .span {
+                font-size: 0.72rem;
+            }
+
+            .fork {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .facts div {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 2px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .span .bar {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top">
+        <div class="wrap">
+            <a class="brand" href="#top">unish<span>.khadka</span></a>
+            <span class="status">Open to backend internships</span>
+        </div>
+    </header>
+
+    <main id="top">
+        <div class="wrap hero">
+            <div class="hero-grid">
+                <div>
+                    <p class="label">Backend developer · CS student</p>
+                    <h1>I build the systems <em>behind the screen.</em></h1>
+                    <p class="lede">APIs, databases and background workers for software that has to keep working after
+                        the demo.</p>
+                    <div class="meta">
+                        <div><span class="label">Studying</span><b>CS, University of Louisiana Monroe</b></div>
+                        <div><span class="label">Writes</span><b>Python · Go · TypeScript</b></div>
+                    </div>
+                </div>
+
+                <div class="trace" aria-label="This page drawn as a request trace. Each row links to a section.">
+                    <div class="trace-head">
+                        <span><b>GET</b> /unish-khadka</span>
+                        <span>trace 7f3a·c1 · 9 spans · <b>240 ms</b></span>
+                    </div>
+                    <div class="trace-body">
+                        <div class="axis" aria-hidden="true">
+                            <span>span</span>
+                            <div class="ticks"><span style="left:0">0</span><span style="left:25%">60</span><span
+                                    style="left:50%">120</span><span style="left:75%">180</span><span
+                                    style="left:100%">240</span></div>
+                            <span style="text-align:right">ms</span>
+                        </div>
+                        <a class="span" href="#top" data-depth="0" style="--s:0;--d:100"><span class="name">handler
+                                <i>root</i></span><span class="track"><span class="bar"></span></span><span
+                                class="ms">240</span></a>
+                        <a class="span" href="#about" data-depth="1" style="--s:2;--d:12"><span
+                                class="name">whoami</span><span class="track"><span class="bar"></span></span><span
+                                class="ms">30</span></a>
+                        <a class="span" href="#work" data-depth="1" style="--s:15;--d:47"><span
+                                class="name">projects.list</span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">114</span></a>
+                        <a class="span" href="#dendrite" data-depth="2" style="--s:17;--d:17"><span
+                                class="name">dendrite <i>go</i></span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">40</span></a>
+                        <a class="span" href="#truehire" data-depth="2" style="--s:29;--d:19"><span
+                                class="name">truehire <i>py</i></span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">45</span></a>
+                        <a class="span" href="#athletex" data-depth="2" style="--s:42;--d:16"><span
+                                class="name">athletex <i>ts</i></span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">38</span></a>
+                        <a class="span" href="#realestate" data-depth="2" style="--s:50;--d:12"><span
+                                class="name">real-estate <i>py</i></span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">28</span></a>
+                        <a class="span" href="#stack" data-depth="1" style="--s:64;--d:15"><span
+                                class="name">stack.resolve</span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">36</span></a>
+                        <a class="span" href="#learning" data-depth="1" style="--s:80;--d:11"><span
+                                class="name">learning.stream</span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">26</span></a>
+                        <a class="span" href="#contact" data-depth="1" style="--s:92;--d:7"><span
+                                class="name">contact.open</span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">17</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="wrap">
+                <div class="sec-head"><span class="label">span · whoami</span>
+                    <h2>About</h2>
+                </div>
+                <div class="about-grid">
+                    <div>
+                        <p>I'm Unish Khadka, a computer science student at the University of Louisiana Monroe. I work
+                            mostly on the backend: the API, the schema, the queue, and the part that runs when nobody is
+                            looking.</p>
+                        <p>I learn by building real projects and pushing them past the prototype stage. That means
+                            migrations instead of a dropped table, retries with backoff instead of a failed request,
+                            tests and CI instead of hoping, and writing down what the system does and does not promise.
+                        </p>
+                        <p>Right now I'm going deeper on Go and on the computer science underneath backend work:
+                            concurrency, distributed systems, database internals and system design.</p>
+                    </div>
+                    <dl class="facts">
+                        <div>
+                            <dt>Focus</dt>
+                            <dd>Backend engineering, API design, database design, system design</dd>
+                        </div>
+                        <div>
+                            <dt>Languages</dt>
+                            <dd>Python, Go, JavaScript, TypeScript, C</dd>
+                        </div>
+                        <div>
+                            <dt>Frameworks</dt>
+                            <dd>Django, Flask, FastAPI, Express, Next.js</dd>
+                        </div>
+                        <div>
+                            <dt>Data</dt>
+                            <dd>PostgreSQL, MySQL, SQLite, Redis</dd>
+                        </div>
+                        <div>
+                            <dt>Based</dt>
+                            <dd>Monroe, Louisiana</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </section>
+
+        <!-- WORK -->
+        <section id="work">
+            <div class="wrap">
+                <div class="sec-head"><span class="label">span · projects.list</span>
+                    <h2>Selected work</h2>
+                </div>
+                <div class="projects">
+
+                    <article class="project" id="dendrite">
+                        <div>
+                            <div class="project-top">
+                                <h3><a href="https://github.com/Zeusangis/Dendrite">Dendrite</a></h3><span
+                                    class="kind">local-first knowledge graph</span>
+                            </div>
+                            <p>A knowledge graph for Markdown notes that runs entirely on your machine. The Markdown
+                                vault stays the source of truth; Dendrite builds a searchable, explainable graph of
+                                notes, links and related activity on top of it.</p>
+                            <ul>
+                                <li>Go API with SQLite persistence and background file sync for edits made outside the
+                                    app</li>
+                                <li>Atomic same-directory writes, strict vault paths and symlink rejection</li>
+                                <li>Revision checks reject stale saves and deletes with HTTP 409</li>
+                                <li>Full-text search, wikilinks, aliases, backlinks and undo/redo</li>
+                                <li>Optional macOS activity collector and browser extension, with no keystrokes or page
+                                    contents recorded</li>
+                            </ul>
+                            <div class="tags"><span class="tag">Go</span><span class="tag">SQLite</span><span
+                                    class="tag">Next.js</span><span class="tag">React</span></div>
+                            <a class="repo-link"
+                                href="https://github.com/Zeusangis/Dendrite">github.com/Zeusangis/Dendrite ↗</a>
+                        </div>
+                        <div class="arch" aria-label="Dendrite architecture">
+                            <span class="label">How it fits together</span>
+                            <div class="flow">
+                                <div class="node"><b>Next.js graph UI</b><small>:3000</small></div>
+                                <div class="link"><span>REST over loopback</span></div>
+                                <div class="node accent"><b>Go API server</b><small>:8080</small></div>
+                                <div class="link"><span>serialized sync</span></div>
+                                <div class="fork">
+                                    <div class="node"><b>Markdown vault</b><small>source of truth</small></div>
+                                    <div class="node"><b>SQLite</b><small>derived graph</small></div>
+                                </div>
+                            </div>
+                            <div class="stats">
+                                <div class="stat"><b>~6.8k</b><span>lines of Go</span></div>
+                                <div class="stat"><b>12</b><span>Go test files</span></div>
+                                <div class="stat"><b>0</b><span>cloud services</span></div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project" id="truehire">
+                        <div>
+                            <div class="project-top">
+                                <h3><a href="https://github.com/Zeusangis/prometheus">TrueHire</a></h3><span
+                                    class="kind">evidence-first technical recruiting</span>
+                            </div>
+                            <p>A recruiting platform that pairs job-specific resume analysis with bounded evidence from
+                                a candidate's public GitHub. AI supplies evidence for a human decision; it never accepts
+                                or rejects anyone on its own.</p>
+                            <ul>
+                                <li>Celery and Redis run screening in the background after each application</li>
+                                <li>Resume and GitHub analysis are independent, durable, and retry with backoff</li>
+                                <li>Recruiter auth, CSRF protection and organization-scoped data access</li>
+                                <li>Append-only audit trail of every stage change and analysis retry</li>
+                                <li>Alembic migrations, automated tests, linting and CI</li>
+                            </ul>
+                            <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span
+                                    class="tag">SQLAlchemy</span><span class="tag">Celery</span><span
+                                    class="tag">Redis</span><span class="tag">React</span><span
+                                    class="tag">TypeScript</span></div>
+                            <a class="repo-link"
+                                href="https://github.com/Zeusangis/prometheus">github.com/Zeusangis/prometheus ↗</a>
+                        </div>
+                        <div class="arch" aria-label="TrueHire architecture">
+                            <span class="label">How it fits together</span>
+                            <div class="flow">
+                                <div class="node"><b>React + TypeScript</b><small>TanStack Query</small></div>
+                                <div class="link"><span>REST API</span></div>
+                                <div class="node accent"><b>Flask API</b><small>auth · orgs · audit</small></div>
+                                <div class="link"><span>enqueue job</span></div>
+                                <div class="fork">
+                                    <div class="node"><b>Database</b><small>Postgres-ready</small></div>
+                                    <div class="node"><b>Celery</b><small>Redis broker</small></div>
+                                </div>
+                                <div class="link"><span>bounded calls</span></div>
+                                <div class="node"><b>Resume + GitHub analysis</b><small>Gemini · GitHub REST</small>
+                                </div>
+                            </div>
+                            <div class="stats">
+                                <div class="stat"><b>136</b><span>backend tests</span></div>
+                                <div class="stat"><b>CI</b><span>on every push</span></div>
+                                <div class="stat"><b>2 s</b><span>live queue refresh</span></div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project" id="athletex">
+                        <div>
+                            <div class="project-top">
+                                <h3><a href="https://github.com/Zeusangis/Nexus">AthleteX</a></h3><span
+                                    class="kind">training load and ACL injury risk</span>
+                            </div>
+                            <p>Training load and ACL injury risk for coaches and athletes on one screen. Athletes log a
+                                short daily check-in; coaches see the whole squad, spot who needs attention, and score
+                                landing mechanics from a jump video.</p>
+                            <ul>
+                                <li>Pose detection measures knee flexion, knee valgus and trunk lean from video</li>
+                                <li>Risk is scored low (0–1), moderate (2–3) or high (4+)</li>
+                                <li>Role-based access: coaches manage athletes, athletes see only their own data</li>
+                                <li>Training assistant answers questions using each athlete's profile and logs</li>
+                            </ul>
+                            <div class="tags"><span class="tag">TypeScript</span><span class="tag">Express</span><span
+                                    class="tag">Prisma</span><span class="tag">FastAPI</span><span
+                                    class="tag">MediaPipe</span><span class="tag">Next.js</span></div>
+                            <a class="repo-link" href="https://github.com/Zeusangis/Nexus">github.com/Zeusangis/Nexus
+                                ↗</a>
+                        </div>
+                        <div class="arch" aria-label="AthleteX architecture">
+                            <span class="label">How it fits together</span>
+                            <div class="flow">
+                                <div class="node"><b>Next.js 15 app</b><small>:3001</small></div>
+                                <div class="link"><span>JWT bearer</span></div>
+                                <div class="node accent"><b>Express + Prisma API</b><small>:8000</small></div>
+                                <div class="link"><span>service calls</span></div>
+                                <div class="fork">
+                                    <div class="node"><b>ACL analysis</b><small>Flask · OpenCV</small></div>
+                                    <div class="node"><b>Assistant</b><small>FastAPI · LangChain</small></div>
+                                </div>
+                            </div>
+                            <div class="stats">
+                                <div class="stat"><b>4</b><span>services</span></div>
+                                <div class="stat"><b>2</b><span>languages</span></div>
+                                <div class="stat"><b>3</b><span>joint angles scored</span></div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project" id="realestate">
+                        <div>
+                            <div class="project-top">
+                                <h3><a href="https://github.com/Zeusangis/django-real-estate">Django Real Estate</a>
+                                </h3><span class="kind">full-stack listings platform</span>
+                            </div>
+                            <p>One of my earlier full-stack projects, and where I first leaned hard into backend work:
+                                listings, search, agent accounts, image uploads, messaging and payment integration, all
+                                on a relational model I designed in Django.</p>
+                            <div class="tags"><span class="tag">Python</span><span class="tag">Django</span><span
+                                    class="tag">SQL</span><span class="tag">REST APIs</span></div>
+                            <a class="repo-link"
+                                href="https://github.com/Zeusangis/django-real-estate">github.com/Zeusangis/django-real-estate
+                                ↗</a>
+                        </div>
+                        <div class="arch" aria-label="Django Real Estate architecture">
+                            <span class="label">How it fits together</span>
+                            <div class="flow">
+                                <div class="node"><b>Django templates</b><small>buyers · agents</small></div>
+                                <div class="link"><span>views + ORM</span></div>
+                                <div class="node accent"><b>Django app</b><small>auth · uploads · payments</small></div>
+                                <div class="link"><span>relational schema</span></div>
+                                <div class="node"><b>SQL database</b><small>listings · messages</small></div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- STACK -->
+        <section id="stack">
+            <div class="wrap">
+                <div class="sec-head"><span class="label">span · stack.resolve</span>
+                    <h2>Stack</h2>
+                </div>
+                <div class="stack">
+                    <div class="stack-row"><span class="label">Languages</span>
+                        <ul>
+                            <li>Python<small>primary</small></li>
+                            <li>Go<small>going deeper</small></li>
+                            <li>TypeScript</li>
+                            <li>JavaScript</li>
+                            <li>C</li>
+                        </ul>
+                    </div>
+                    <div class="stack-row"><span class="label">Backend</span>
+                        <ul>
+                            <li>Django</li>
+                            <li>Flask</li>
+                            <li>FastAPI</li>
+                            <li>Node.js / Express</li>
+                            <li>Celery</li>
+                            <li>Prisma</li>
+                            <li>SQLAlchemy</li>
+                        </ul>
+                    </div>
+                    <div class="stack-row"><span class="label">Data</span>
+                        <ul>
+                            <li>PostgreSQL</li>
+                            <li>MySQL</li>
+                            <li>SQLite</li>
+                            <li>Redis</li>
+                        </ul>
+                    </div>
+                    <div class="stack-row"><span class="label">Frontend</span>
+                        <ul>
+                            <li>React</li>
+                            <li>Next.js</li>
+                            <li>Tailwind CSS</li>
+                            <li>TanStack Query</li>
+                        </ul>
+                    </div>
+                    <div class="stack-row"><span class="label">Tools</span>
+                        <ul>
+                            <li>Docker</li>
+                            <li>Linux</li>
+                            <li>Git &amp; GitHub</li>
+                            <li>Bash</li>
+                            <li>GitHub Actions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEARNING -->
+        <section id="learning">
+            <div class="wrap">
+                <div class="sec-head"><span class="label">span · learning.stream</span>
+                    <h2>Currently learning</h2>
+                </div>
+                <div class="queue">
+                    <div class="job"><span class="label"><span>job 01</span><span class="st">running</span></span>
+                        <h3>Go, properly</h3>
+                        <p>Idiomatic services, goroutines and channels, and the standard library over frameworks.</p>
+                    </div>
+                    <div class="job"><span class="label"><span>job 02</span><span class="st">running</span></span>
+                        <h3>Concurrency</h3>
+                        <p>Locks, races and serialized work, starting with Dendrite's sync loop.</p>
+                    </div>
+                    <div class="job"><span class="label"><span>job 03</span><span class="st">running</span></span>
+                        <h3>Distributed systems</h3>
+                        <p>Queues, retries, idempotency and what happens when a worker dies mid-job.</p>
+                    </div>
+                    <div class="job"><span class="label"><span>job 04</span><span class="st">running</span></span>
+                        <h3>Database internals</h3>
+                        <p>Indexes, transactions and how SQLite and Postgres actually store a row.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="wrap">
+                <div class="sec-head"><span class="label">span · contact.open</span>
+                    <h2>Contact</h2>
+                </div>
+                <div class="contact-grid">
+                    <p class="big">Looking for someone who cares what happens after the request returns? Let's talk.</p>
+                    <nav class="links" aria-label="Profiles">
+                        <a href="https://www.linkedin.com/in/unish-khadka-642206280/">LinkedIn <span>in/unish-khadka
+                                ↗</span></a>
+                        <a href="https://github.com/Zeusangis">GitHub <span>@Zeusangis ↗</span></a>
+                        <a href="https://x.com/unish_khadka">X <span>@unish_khadka ↗</span></a>
+                        <a href="https://instagram.com/unish.khadka.14">Instagram <span>@unish.khadka.14 ↗</span></a>
+                    </nav>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <span>© 2026 Unish Khadka</span>
+            <span>200 OK · 240 ms</span>
+        </div>
+    </footer>
+
+</body>
+
+</html>
