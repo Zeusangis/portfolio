@@ -877,18 +877,18 @@
                         <a class="span" href="#work" data-depth="1" style="--s:15;--d:47"><span
                                 class="name">projects.list</span><span class="track"><span
                                     class="bar"></span></span><span class="ms">114</span></a>
-                        <a class="span" href="#dendrite" data-depth="2" style="--s:17;--d:17"><span
+                        <a class="span" href="#climatecrop" data-depth="2" style="--s:17;--d:18"><span
+                                class="name">climatecrop <i>py</i></span><span class="track"><span
+                                    class="bar"></span></span><span class="ms">43</span></a>
+                        <a class="span" href="#dendrite" data-depth="2" style="--s:29;--d:15"><span
                                 class="name">dendrite <i>go</i></span><span class="track"><span
                                     class="bar"></span></span><span class="ms">40</span></a>
-                        <a class="span" href="#truehire" data-depth="2" style="--s:29;--d:19"><span
+                        <a class="span" href="#truehire" data-depth="2" style="--s:39;--d:14"><span
                                 class="name">truehire <i>py</i></span><span class="track"><span
                                     class="bar"></span></span><span class="ms">45</span></a>
-                        <a class="span" href="#athletex" data-depth="2" style="--s:42;--d:16"><span
+                        <a class="span" href="#athletex" data-depth="2" style="--s:50;--d:12"><span
                                 class="name">athletex <i>ts</i></span><span class="track"><span
                                     class="bar"></span></span><span class="ms">38</span></a>
-                        <a class="span" href="#realestate" data-depth="2" style="--s:50;--d:12"><span
-                                class="name">real-estate <i>py</i></span><span class="track"><span
-                                    class="bar"></span></span><span class="ms">28</span></a>
                         <a class="span" href="#stack" data-depth="1" style="--s:64;--d:15"><span
                                 class="name">stack.resolve</span><span class="track"><span
                                     class="bar"></span></span><span class="ms">36</span></a>
@@ -954,6 +954,56 @@
                     <h2>Selected work</h2>
                 </div>
                 <div class="projects">
+
+                    <article class="project" id="climatecrop">
+                        <div>
+                            <div class="project-top">
+                                <h3><a href="https://github.com/Zeusangis/ClimateCrop-AI">ClimateCrop AI</a></h3><span
+                                    class="kind">climate-driven planting decisions</span>
+                            </div>
+                            <p>Turns public climate and crop records into planting decisions for one farm. A farmer
+                                saves their farm once; the app ranks which crops fit, finds when to plant, compares
+                                seasons, and follows a crop from sowing to harvest with an expert alongside. Every number
+                                comes from a named source, and AI only writes advice text from facts the app hands it.
+                                Built with a teammate for TechXpo 2026 at the University of Louisiana Monroe.</p>
+                            <ul>
+                                <li>Crop fit is scored by stated rules (60% weakest factor + 40% average of warmth,
+                                    water, soil and pH) against a 30-year NASA POWER climate normal</li>
+                                <li>Crop expert output must match a fixed format and is rejected if it gives a chemical
+                                    dose or a number not in the facts, falling back to general guidance</li>
+                                <li>Field alerts for frost, heat, heavy rain and dry spells from the real forecast</li>
+                                <li>Leaf-photo disease checks with Pl@ntNet, with Gemini as a second look when unsure</li>
+                                <li>Cookie auth through a same-origin proxy, CI on every push, Render + Vercel deploys
+                                </li>
+                            </ul>
+                            <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span
+                                    class="tag">SQLite</span><span class="tag">Next.js</span><span
+                                    class="tag">TypeScript</span><span class="tag">Gemini</span></div>
+                            <a class="repo-link"
+                                href="https://github.com/Zeusangis/ClimateCrop-AI">github.com/Zeusangis/ClimateCrop-AI
+                                ↗</a>
+                        </div>
+                        <div class="arch" aria-label="ClimateCrop AI architecture">
+                            <span class="label">How it fits together</span>
+                            <div class="flow">
+                                <div class="node"><b>Next.js app</b><small>Vercel · /backend proxy</small></div>
+                                <div class="link"><span>REST + session cookie</span></div>
+                                <div class="node accent"><b>Flask API</b><small>rules · journeys · expert</small></div>
+                                <div class="link"><span>sourced data</span></div>
+                                <div class="fork">
+                                    <div class="node"><b>Climate data</b><small>NASA POWER · Open-Meteo</small></div>
+                                    <div class="node"><b>Crop data</b><small>FAO ECOCROP · SQLite</small></div>
+                                </div>
+                                <div class="link"><span>fact sheet only</span></div>
+                                <div class="node"><b>AI advice</b><small>Gemini · Pl@ntNet</small></div>
+                            </div>
+                            <div class="stats">
+                                <div class="stat"><b>30</b><span>crops scored</span></div>
+                                <div class="stat"><b>144</b><span>automated tests</span></div>
+                                <div class="stat"><b>7</b><span>public data sources</span></div>
+                            </div>
+                        </div>
+                    </article>
 
                     <article class="project" id="dendrite">
                         <div>
@@ -1081,33 +1131,6 @@
                                 <div class="stat"><b>4</b><span>services</span></div>
                                 <div class="stat"><b>2</b><span>languages</span></div>
                                 <div class="stat"><b>3</b><span>joint angles scored</span></div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="project" id="realestate">
-                        <div>
-                            <div class="project-top">
-                                <h3><a href="https://github.com/Zeusangis/django-real-estate">Django Real Estate</a>
-                                </h3><span class="kind">full-stack listings platform</span>
-                            </div>
-                            <p>One of my earlier full-stack projects, and where I first leaned hard into backend work:
-                                listings, search, agent accounts, image uploads, messaging and payment integration, all
-                                on a relational model I designed in Django.</p>
-                            <div class="tags"><span class="tag">Python</span><span class="tag">Django</span><span
-                                    class="tag">SQL</span><span class="tag">REST APIs</span></div>
-                            <a class="repo-link"
-                                href="https://github.com/Zeusangis/django-real-estate">github.com/Zeusangis/django-real-estate
-                                ↗</a>
-                        </div>
-                        <div class="arch" aria-label="Django Real Estate architecture">
-                            <span class="label">How it fits together</span>
-                            <div class="flow">
-                                <div class="node"><b>Django templates</b><small>buyers · agents</small></div>
-                                <div class="link"><span>views + ORM</span></div>
-                                <div class="node accent"><b>Django app</b><small>auth · uploads · payments</small></div>
-                                <div class="link"><span>relational schema</span></div>
-                                <div class="node"><b>SQL database</b><small>listings · messages</small></div>
                             </div>
                         </div>
                     </article>
